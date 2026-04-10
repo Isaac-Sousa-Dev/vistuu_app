@@ -1,0 +1,374 @@
+---
+description: Boas práticas para projetos Vue 3 com Composition API, Pinia, e ecossistema moderno
+globs: **/*.vue, **/*.ts, **/*.js, **/stores/**, **/composables/**
+alwaysApply: true
+---
+
+# Vue 3 Composition API — Regras de Boas Práticas
+
+## 🏗️ Estrutura de Projeto
+
+```
+src/
+├── assets/
+├── components/
+│   ├── base/          # Componentes genéricos reutilizáveis (BaseButton, BaseInput…)
+│   ├── layout/        # Header, Footer, Sidebar…
+│   └── features/      # Componentes específicos de domínio
+├── composables/       # Lógica reutilizável (useAuth, useFetch…)
+├── pages/ (ou views/) # Componentes de rota — apenas orquestração
+├── router/
+├── stores/            # Pinia stores
+├── services/          # Chamadas de API
+├── utils/             # Funções puras utilitárias
+└── types/             # Interfaces e tipos TypeScript
+```
+
+- Sempre use **TypeScript** (`lang="ts"` em todos os SFCs).
+- Prefira `<script setup>` em todos os componentes.
+- Um componente por arquivo; nome em **PascalCase**.
+- Páginas/views são responsáveis apenas por compor componentes e acionar stores — sem lógica de negócio direta.
+
+---
+
+## 📝 Componentes — Script Setup
+
+```vue
+<!-- ✅ CORRETO -->
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
+
+interface Props {
+  title: string
+  count?: number
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  count: 0,
+})
+
+const emit = defineEmits<{
+  update: [value: number]
+  close: []
+}>()
+
+const store = useUserStore()
+const localValue = ref(0)
+
+const doubled = computed(() => localValue.value * 2)
+
+function handleClick() {
+  localValue.value++
+  emit('update', localValue.value)
+}
+
+onMounted(() => {
+  // inicializações
+})
+</script>
+```
+
+- **Nunca** use Options API em código novo.
+- Declare sempre `Props` e `Emits` com generics tipados.
+- Use `withDefaults` para valores padrão de props.
+- Mantenha o bloco `<script setup>` organizado na ordem: imports → tipos → props/emits → stores → refs/reactivos → computed → funções → lifecycle hooks.
+
+---
+
+## 🍍 Pinia — Gerenciamento de Estado
+
+```ts
+// stores/user.ts
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+import type { User } from '@/types/user'
+
+// ✅ Use sempre a Composition Store (setup store)
+export const useUserStore = defineStore('user', () => {
+  // State
+  const user = ref<User | null>(null)
+  const isLoading = ref(false)
+
+  // Getters
+  const isAuthenticated = computed(() => !!user.value)
+  const fullName = computed(() =>
+    user.value ? `${user.value.firstName} ${user.value.lastName}` : ''
+  )
+
+  // Actions
+  async function fetchUser(id: string) {
+    isLoading.value = true
+    try {
+      user.value = await UserService.getById(id)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  function logout() {
+    user.value = null
+  }
+
+  return { user, isLoading, isAuthenticated, fullName, fetchUser, logout }
+})
+```
+
+- **Sempre** use **setup stores** (não options stores).
+- Um arquivo de store por domínio; nome do arquivo em `kebab-case`.
+- O nome da store (primeiro argumento do `defineStore`) deve ser único e em `camelCase`.
+- Nunca acesse a store diretamente fora de componentes ou outros composables — use o hook `use*Store()`.
+- Use `storeToRefs()` para desestruturar estado/getters reativos de uma store.
+- Persista estado com `pinia-plugin-persistedstate` quando necessário — configure por store, nunca globalmente.
+
+```ts
+// ✅ Desestruturação correta
+const { user, isLoading } = storeToRefs(useUserStore())
+const { fetchUser, logout } = useUserStore() // actions não precisam de storeToRefs
+```
+
+---
+
+## ♻️ Composables
+
+```ts
+// composables/useFetch.ts
+import { ref, shallowRef } from 'vue'
+
+export function useFetch<T>(url: string) {
+  const data = shallowRef<T | null>(null)
+  const error = ref<Error | null>(null)
+  const isLoading = ref(false)
+
+  async function execute() {
+    isLoading.value = true
+    error.value = null
+    try {
+      const res = await fetch(url)
+      data.value = await res.json()
+    } catch (e) {
+      error.value = e as Error
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  return { data, error, isLoading, execute }
+}
+```
+
+- Todo composable começa com `use` + PascalCase.
+- Composables devem ser funções puras e reutilizáveis — sem efeitos colaterais globais.
+- Retorne sempre um objeto (não array, exceto padrões convencionados como `useState`).
+- Use `shallowRef` para objetos/arrays grandes que não precisam de reatividade profunda.
+- Limpe side-effects com `onUnmounted` dentro do composable quando necessário.
+
+---
+
+## ⚡ Reatividade
+
+```ts
+// ✅ Prefira ref para primitivos
+const count = ref(0)
+
+// ✅ Prefira reactive para objetos complexos relacionados
+const form = reactive({
+  name: '',
+  email: '',
+  age: 0,
+})
+
+// ✅ Use shallowRef/shallowReactive para performance com dados grandes
+const tableData = shallowRef<Row[]>([])
+
+// ✅ Use computed para valores derivados — nunca calcule no template
+const filteredItems = computed(() =>
+  items.value.filter(i => i.active)
+)
+
+// ❌ ERRADO — lógica no template
+// v-for="item in items.filter(i => i.active)"
+```
+
+- Prefira `ref` para primitivos e `reactive` para objetos de formulário ou agrupamentos lógicos.
+- **Nunca** desestruture um `reactive` diretamente — perde a reatividade. Use `toRefs` se necessário.
+- Use `computed` com setter explícito quando precisar de two-way binding derivado.
+- Evite `watch` quando um `computed` resolve o problema — `watch` é para side-effects.
+
+```ts
+// ✅ watch para side-effects
+watch(userId, async (newId) => {
+  await fetchUserData(newId)
+})
+
+// ✅ watchEffect para dependências dinâmicas
+watchEffect(() => {
+  document.title = `${route.meta.title} — ${appName}`
+})
+```
+
+---
+
+## 🧩 Componentização
+
+- **Componentes Base** (`Base*`): sem lógica de negócio, altamente configuráveis via props/slots.
+- **Componentes de Feature**: consomem stores e composables, orquestram componentes base.
+- **Componentes de Layout**: estrutura de página, recebem conteúdo via `<slot>`.
+
+```vue
+<!-- ✅ Uso correto de slots nomeados -->
+<template>
+  <BaseCard>
+    <template #header>
+      <h2>{{ title }}</h2>
+    </template>
+    <template #default>
+      <slot />
+    </template>
+    <template #footer>
+      <BaseButton @click="emit('confirm')">Confirmar</BaseButton>
+    </template>
+  </BaseCard>
+</template>
+```
+
+- Use `defineExpose` com parcimônia — prefira comunicação por props/emits.
+- Use `v-model` com `defineModel()` (Vue 3.4+) para two-way binding em componentes filhos.
+- Componentes com mais de ~200 linhas devem ser divididos.
+
+```ts
+// ✅ Vue 3.4+ defineModel
+const model = defineModel<string>()
+```
+
+---
+
+## 🔀 Vue Router
+
+```ts
+// ✅ Tipagem de rotas com vue-router
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+
+// Navegação programática
+router.push({ name: 'UserProfile', params: { id: userId } })
+
+// Guards em composables
+function useAuthGuard() {
+  const userStore = useUserStore()
+  onBeforeRouteLeave((to, from, next) => {
+    if (userStore.hasUnsavedChanges) {
+      // confirmar saída
+    } else {
+      next()
+    }
+  })
+}
+```
+
+- Defina rotas com `name` obrigatório — nunca navegue por path literal.
+- Use **lazy loading** em todas as páginas: `component: () => import('@/pages/UserPage.vue')`.
+- Coloque guards de rota globais no `router/index.ts`; guards locais via composables.
+- Defina meta tipada das rotas com `declare module 'vue-router'`.
+
+---
+
+## 🎨 Templates
+
+```vue
+<template>
+  <!-- ✅ v-if / v-else juntos, sem v-show desnecessário -->
+  <LoadingSpinner v-if="isLoading" />
+  <ErrorMessage v-else-if="error" :message="error.message" />
+  <UserList v-else :users="users" />
+
+  <!-- ✅ :key único e estável em v-for -->
+  <UserCard
+    v-for="user in users"
+    :key="user.id"
+    :user="user"
+    @select="handleSelect"
+  />
+
+  <!-- ✅ Eventos com handlers nomeados, não inline -->
+  <BaseButton @click="handleSubmit">Salvar</BaseButton>
+</template>
+```
+
+- Nunca use `v-if` e `v-for` no mesmo elemento — envolva com `<template>`.
+- `:key` em `v-for` deve ser **único, estável e não o índice** (exceto listas estáticas).
+- Prefira event handlers nomeados a arrow functions inline no template.
+- Use `<Teleport>` para modais e tooltips fora da hierarquia do DOM.
+- Use `<Suspense>` + componentes assíncronos para carregamento declarativo.
+
+---
+
+## 🏎️ Performance
+
+```ts
+// ✅ Componente assíncrono com loading/error
+const AsyncHeavyTable = defineAsyncComponent({
+  loader: () => import('./HeavyTable.vue'),
+  loadingComponent: LoadingSpinner,
+  errorComponent: ErrorFallback,
+  delay: 200,
+})
+```
+
+- Use `v-memo` para listas com renders caros e dependências estáveis.
+- Use `shallowRef` / `shallowReactive` para dados grandes sem necessidade de reatividade profunda.
+- Prefira `markRaw` para objetos não reativos (ex: instâncias de libs externas).
+- Ative a compilação com `defineOptions({ inheritAttrs: false })` quando precisar de controle de `$attrs`.
+- Use **Virtual Scrolling** (ex: `vue-virtual-scroller`) para listas com centenas de itens.
+
+---
+
+## 🧪 Testabilidade
+
+- Escreva composables e stores completamente testáveis em isolamento (sem montar componente).
+- Use `@vue/test-utils` com `mount`/`shallowMount` e setup de Pinia com `createTestingPinia`.
+- Nomeie testes com padrão: `deve [comportamento esperado] quando [condição]`.
+
+```ts
+// ✅ Teste de store isolado
+import { setActivePinia, createPinia } from 'pinia'
+import { useUserStore } from '@/stores/user'
+
+describe('useUserStore', () => {
+  beforeEach(() => setActivePinia(createPinia()))
+
+  it('deve marcar isAuthenticated como true após login', async () => {
+    const store = useUserStore()
+    await store.login({ email: 'a@b.com', password: '123' })
+    expect(store.isAuthenticated).toBe(true)
+  })
+})
+```
+
+---
+
+## 🚫 Anti-padrões — Nunca Faça
+
+- ❌ Mutar props diretamente dentro do componente filho.
+- ❌ Usar `any` em TypeScript — prefira `unknown` ou tipos explícitos.
+- ❌ Chamar `useStore()` fora de `setup()` ou composables (quebrará o contexto).
+- ❌ Acessar o DOM diretamente sem `ref` de template ou `nextTick`.
+- ❌ Colocar lógica de negócio em componentes de página — delegue a composables/stores.
+- ❌ Usar `Options API` misturada com `Composition API`.
+- ❌ Criar stores gigantes — separe por domínio/funcionalidade.
+- ❌ Usar `EventBus` global — use stores Pinia ou `provide/inject` tipado.
+
+---
+
+## ✅ Checklist por PR
+
+- [ ] Componentes com `<script setup lang="ts">`
+- [ ] Props e emits tipados com generics
+- [ ] Stores usando setup store com Pinia
+- [ ] Composables com prefixo `use*` e retorno de objeto
+- [ ] Sem lógica de negócio em templates
+- [ ] Lazy loading em rotas
+- [ ] Sem mutação direta de props
+- [ ] Sem uso de `any`
