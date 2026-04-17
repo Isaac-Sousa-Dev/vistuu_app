@@ -28,7 +28,7 @@
         </p>
       </div>
 
-      <nav class="flex flex-1 flex-col gap-5 px-3 pb-8">
+      <nav class="flex flex-1 flex-col gap-5 pr-5 pb-8">
         <section v-for="section in sections" :key="section.title" class="flex flex-col gap-1">
           <h2 class="app-sidebar__section-title">
             {{ section.title }}
@@ -159,14 +159,14 @@ function handleBackdropClick() {
 
 <style scoped>
 .app-sidebar {
-  background-color: #2d3035;
+  background-color: #2a2653;
 }
 
 .app-sidebar__section-title {
   margin-bottom: 0.25rem;
   border-radius: 0 0.5rem 0.5rem 0;
   background-color: #45336e;
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 1rem;
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -178,10 +178,10 @@ function handleBackdropClick() {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.50rem;
   border: none;
   border-radius: 0 0.375rem 0.375rem 0;
-  padding: 0.75rem 1rem;
+  padding: 0.40rem 1rem;
   font-size: 0.9375rem;
   color: #fff;
   background: transparent;
@@ -195,17 +195,7 @@ function handleBackdropClick() {
 
 .app-sidebar__item--active {
   background-color: #8e44ad;
-}
-
-.app-sidebar__item--active::after {
-  content: '';
-  position: absolute;
-  top: 0.35rem;
-  bottom: 0.35rem;
-  right: 0;
-  width: 3px;
-  border-radius: 2px 0 0 2px;
-  background-color: #e67e22;
+  border-right: 4px solid #fff;
 }
 
 .app-sidebar__item--disabled {

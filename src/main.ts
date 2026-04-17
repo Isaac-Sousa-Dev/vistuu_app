@@ -10,7 +10,8 @@ import Menubar from 'primevue/menubar';
 import Avatar from 'primevue/avatar';
 import Badge from 'primevue/badge';
 import Aura from '@primeuix/themes/aura';
-import 'primeicons/primeicons.css'
+import Card from 'primevue/card';
+// import * as LucideIcons from '@lucide/vue';
 import './style.css'
 import router from './router'
 
@@ -34,4 +35,5 @@ app.component('Password', Password)
 app.component('Menubar', Menubar)
 app.component('Avatar', Avatar)
 app.component('Badge', Badge)
+app.component('Card', Card)
 app.mount('#app')
