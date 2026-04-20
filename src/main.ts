@@ -11,9 +11,11 @@ import Avatar from 'primevue/avatar';
 import Badge from 'primevue/badge';
 import Aura from '@primeuix/themes/aura';
 import Card from 'primevue/card';
+import Divider from 'primevue/divider';
 // import * as LucideIcons from '@lucide/vue';
 import './style.css'
 import router from './router'
+import IconComponent from './components/IconComponent.vue'
 
 const app = createApp(App)
 
@@ -36,4 +38,6 @@ app.component('Menubar', Menubar)
 app.component('Avatar', Avatar)
 app.component('Badge', Badge)
 app.component('Card', Card)
+app.component('Divider', Divider)
+app.component('IconComponent', IconComponent)
 app.mount('#app')

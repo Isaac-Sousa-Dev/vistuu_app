@@ -1,86 +1,24 @@
 <template>
   <div>
-    <div
-      v-show="visible"
-      class="fixed inset-0 z-30 bg-black/45 md:hidden"
-      aria-hidden="true"
-      @click="handleBackdropClick"
-    />
-
-    <aside
-      class="app-sidebar fixed inset-y-0 left-0 z-40 flex w-64 flex-col overflow-y-auto shadow-xl transition-transform duration-200 ease-out md:translate-x-0"
-      :class="visible ? 'translate-x-0' : '-translate-x-full md:translate-x-0'"
-      role="navigation"
-      aria-label="Menu principal"
-    >
-      <div class="flex flex-col items-center px-4 pb-6 pt-8">
-        <div class="flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full bg-white p-2 shadow-sm">
-          <img
-            src="/sidebar-logo.png"
-            alt="Vistuu"
-            class="h-full w-full object-contain"
-            width="56"
-            height="56"
-          />
-        </div>
-        <p class="mt-4 text-center text-base font-bold leading-tight text-white">
-          {{ storeName }}
-        </p>
+    <div class="card flex justify-center">
+        <Drawer v-model:visible="visible" header="Drawer">
+            <div>
+              Icon
+            </div>
+        </Drawer>
       </div>
-
-      <nav class="flex flex-1 flex-col gap-5 pr-5 pb-8">
-        <section v-for="section in sections" :key="section.title" class="flex flex-col gap-1">
-          <h2 class="app-sidebar__section-title">
-            {{ section.title }}
-          </h2>
-          <ul class="flex flex-col gap-0.5">
-            <li v-for="item in section.items" :key="item.label">
-              <RouterLink
-                v-if="item.routeName && !item.disabled"
-                v-slot="{ navigate, isExactActive }"
-                custom
-                :to="{ name: item.routeName }"
-              >
-                <button
-                  type="button"
-                  class="app-sidebar__item w-full text-left"
-                  :class="{ 'app-sidebar__item--active': isExactActive || isActiveRoute(item) }"
-                  @click="
-                    () => {
-                      navigate()
-                      closeAfterNavigate()
-                    }
-                  "
-                >
-                  <span class="app-sidebar__icon pi" :class="item.icon" aria-hidden="true" />
-                  <span class="min-w-0 flex-1 truncate font-medium">{{ item.label }}</span>
-                </button>
-              </RouterLink>
-              <div
-                v-else
-                class="app-sidebar__item"
-                :class="{
-                  'app-sidebar__item--disabled': item.disabled,
-                }"
-              >
-                <span class="app-sidebar__icon pi" :class="item.icon" aria-hidden="true" />
-                <span class="min-w-0 flex-1 truncate font-medium">{{ item.label }}</span>
-                <Badge
-                  v-if="item.badge"
-                  :value="item.badge"
-                  class="app-sidebar__badge shrink-0 border-0 text-xs font-semibold"
-                />
-              </div>
-            </li>
-          </ul>
-        </section>
-      </nav>
-    </aside>
+      <Button icon="pi pi-arrow-right" @click="visible = true" />
   </div>
+
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
+import Drawer from 'primevue/drawer';
+
+import { ref } from "vue";
+
+const visible = ref(false);
 
 interface NavItem {
   label: string
@@ -114,14 +52,14 @@ const route = useRoute()
 const sections: NavSection[] = [
   {
     title: 'INÍCIO',
-    items: [{ label: 'Dashboard', icon: 'pi-th-large', routeName: 'Home' }],
+    items: [{ label: 'Dashboard', icon: 'Whatsapp', routeName: 'Home' }],
   },
   {
     title: 'ATENDIMENTO',
     items: [
       {
         label: 'Agente IA',
-        icon: 'pi-whatsapp',
+        icon: 'Whatsapp',
         badge: 'Em breve',
         disabled: true,
       },
@@ -130,16 +68,16 @@ const sections: NavSection[] = [
   {
     title: 'GESTÃO',
     items: [
-      { label: 'Pedidos', icon: 'pi-sync' },
-      { label: 'Vendas', icon: 'pi-wallet' },
+      { label: 'Pedidos', icon: 'Sync' },
+      { label: 'Vendas', icon: 'Wallet' },
     ],
   },
   {
     title: 'CATÁLOGO',
     items: [
-      { label: 'Categorias', icon: 'pi-objects-column' },
-      { label: 'Marcas', icon: 'pi-star' },
-      { label: 'Produtos', icon: 'pi-list' },
+      { label: 'Categorias', icon: 'ObjectsColumn' },
+      { label: 'Marcas', icon: 'Star' },
+      { label: 'Produtos', icon: 'List' },
     ],
   },
 ]
@@ -159,18 +97,18 @@ function handleBackdropClick() {
 
 <style scoped>
 .app-sidebar {
-  background-color: #2a2653;
+  background-color: #412B6B;
 }
 
 .app-sidebar__section-title {
   margin-bottom: 0.25rem;
   border-radius: 0 0.5rem 0.5rem 0;
-  background-color: #45336e;
+  /* background-color: #45336e; */
   padding: 0.4rem 1rem;
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
-  color: #fff;
+  color: #e67e22;
   text-transform: uppercase;
 }
 
@@ -194,8 +132,8 @@ function handleBackdropClick() {
 }
 
 .app-sidebar__item--active {
-  background-color: #8e44ad;
-  border-right: 4px solid #fff;
+  background-color: #e67e22;
+  border-right: 4px solid #e67e22;
 }
 
 .app-sidebar__item--disabled {

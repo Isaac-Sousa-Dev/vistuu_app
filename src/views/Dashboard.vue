@@ -4,15 +4,15 @@
     <div class="flex min-h-screen flex-col md:pl-64">
       <AppNavbar @toggle-sidebar="handleToggleSidebar" />
       <main class="flex-1 p-4 md:p-6">
-        <Breadcrumb class="mb-2" :model="[{ label: 'Home', url: '/' }, { label: 'Dashboard', url: '/dashboard' }]">
+        <Breadcrumb class="mb-2 bg-transparent" :model="[{ label: 'Home', url: '/' }, { label: 'Dashboard', url: '/dashboard' }]">
             <template #item="{ item }">
                 <a class="cursor-pointer" :href="item.url">
-                    <span :class="item.icon"></span>
+                    <span :class="item.icon">{{ item.label }}</span>
                 </a>
             </template>
             <template #separator> / </template>
         </Breadcrumb>
-        <div class="text-3xl font-bold mb-4">
+        <div class="text-3xl mb-4">
           Dashboard
         </div>
 
@@ -23,22 +23,83 @@
           <CardDashboard title="Saldo do mês" value="R$ 2.000,00" icon="Wallet" iconColor="bg-yellow-500" valueSize="text-lg" />
         </div>
 
-        <div class="mt-5">
+        <div class="mt-10">
           <div class="flex items-center justify-between">
-            <div class="text-xl font-semibold flex items-center">
-              <List class="w-6 h-6 mr-2" />
+            <div class="text-lg font-semibold flex items-center">
+              <List class="w-5 h-5 mr-2" />
               Últimos pedidos
             </div>
   
             <div class="text-md text-gray-500">
-              <div class="cursor-pointer">Ver todos</div>
+              <div class="cursor-pointer font-semibold text-purple-700">Ver todos</div>
             </div>
           </div>
 
           <div class="text-sm text-gray-500">
             Pedidos recentes recebidos pelo catálogo.
           </div>
+
+          <div class="mt-5 flex flex-col gap-1">
+            <div class="bg-white p-3 rounded-lg">
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-500">
+                  Pedido #123456
+                </div>
+                <div class="text-sm text-gray-500 font-semibold">
+                  R$ 100,00
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-3 rounded-lg">
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-500">
+                  Pedido #123456
+                </div>
+                <div class="text-sm text-gray-500 font-semibold">
+                  R$ 100,00
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
+
+        <div class="mt-10">
+          <div class="flex items-center justify-between">
+            <div class="text-lg font-semibold flex items-center">
+              <List class="w-5 h-5 mr-2" />
+              Produtos recentes
+            </div>
+  
+            <div class="text-md text-gray-500">
+              <div class="cursor-pointer font-semibold text-purple-700">Ver todos</div>
+            </div>
+          </div>
+
+          <div class="text-sm text-gray-500">
+            Últimos produtos adicionados ao catálogo.
+          </div>
+
+          <div class="mt-5 flex flex-col gap-1">
+            <div class="bg-white p-3 rounded-lg">
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-500">
+                  Produto #123456
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-3 rounded-lg">
+              <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-500">
+                  Produto #123456
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </main>
     </div>
   </div>
