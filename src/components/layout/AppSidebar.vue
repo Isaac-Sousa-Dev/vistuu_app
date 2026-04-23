@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="card flex justify-center">
-        <Drawer class="p-6 bg-[#ede9fe]" v-model:visible="layout.sidebarOpen.value">
+        <Drawer class="p-6 bg-[#4E56C0]" v-model:visible="layout.sidebarOpen.value">
           <template #header>
               <SidebarHeader />
           </template>

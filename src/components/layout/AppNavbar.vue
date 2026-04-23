@@ -1,12 +1,12 @@
 <template>
   <header
-    class="flex h-14 items-center justify-between bg-[#ede9fe] px-4 md:px-6"
+    class="flex h-14 items-center justify-between bg-[#4E56C0] px-4 md:px-6"
   >
     <template v-if="isAuthenticated">
       <div class="flex min-w-0 items-center gap-3">
         <button
           type="button"
-          class="cursor-pointer rounded p-1 text-gray-500 transition hover:bg-gray-100 hover:text-gray-700"
+          class="cursor-pointer rounded p-1 text-white transition hover:bg-gray-100 hover:text-gray-700"
           aria-label="Abrir menu"
           @click="handleToggleSidebar"
         >
@@ -14,17 +14,17 @@
             <path stroke-linecap="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <h1 class="truncate text-lg font-semibold text-gray-900">{{ pageTitle }}</h1>
+        <h1 class="truncate text-lg font-semibold text-white">{{ pageTitle }}</h1>
       </div>
 
       <div class="flex items-center gap-4">
         <button
           type="button"
-          class="cursor-pointer rounded p-1 text-gray-600 transition hover:bg-gray-100"
+          class="cursor-pointer rounded p-1 text-white transition hover:bg-blue-500"
           aria-label="Notificações"
           @click="handleNotificationsClick"
         >
-          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -40,8 +40,8 @@
           @click="handleProfileClick"
         >
           <div class="hidden min-w-0 text-right sm:block">
-            <div class="truncate text-sm font-medium text-gray-800">{{ user?.displayName }}</div>
-            <div class="truncate text-xs text-gray-500">{{ user?.email }}</div>
+            <div class="truncate text-sm font-medium text-white">{{ user?.displayName }}</div>
+            <div class="truncate text-xs text-gray-300">{{ user?.email }}</div>
           </div>
           <span
             class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-violet-200 bg-violet-100 text-sm font-semibold text-violet-700"

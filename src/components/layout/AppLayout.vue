@@ -4,7 +4,7 @@
         <AppSidebar />
 
         <!-- Sidebar fixo só aparece no desktop -->
-        <aside class="hidden lg:flex fixed left-0 top-0 h-screen w-80 flex-col bg-[#ede9fe]">
+        <aside class="hidden lg:flex fixed left-0 top-0 h-screen w-80 flex-col bg-[#4E56C0]">
             <AppSidebarContent />
         </aside>
 
