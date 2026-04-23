@@ -28,6 +28,9 @@ defineProps({
     iconColor: {
         type: String
     },
+    iconTextColor: {
+        type: String
+    },
     valueSize: {
         type: String
     }

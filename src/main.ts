@@ -12,10 +12,18 @@ import Badge from 'primevue/badge';
 import Aura from '@primeuix/themes/aura';
 import Card from 'primevue/card';
 import Divider from 'primevue/divider';
-// import * as LucideIcons from '@lucide/vue';
+
+/* import the fontawesome core */
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+/* import icons and add them to the Library */
+import { faUserSecret, faThumbsUp, faGaugeSimpleHigh, faRobot, faListUl, faWallet, faLayerGroup, faStar, faList } from '@fortawesome/free-solid-svg-icons'
+import { faFacebook } from '@fortawesome/free-brands-svg-icons'
+
+library.add(faUserSecret, faThumbsUp, faFacebook, faGaugeSimpleHigh, faRobot, faListUl, faWallet, faLayerGroup, faStar, faList)
+
 import './style.css'
 import router from './router'
-import IconComponent from './components/IconComponent.vue'
 
 const app = createApp(App)
 
@@ -39,5 +47,5 @@ app.component('Avatar', Avatar)
 app.component('Badge', Badge)
 app.component('Card', Card)
 app.component('Divider', Divider)
-app.component('IconComponent', IconComponent)
+app.component('font-awesome-icon', FontAwesomeIcon)
 app.mount('#app')

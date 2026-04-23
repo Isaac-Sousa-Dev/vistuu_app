@@ -6,7 +6,9 @@
             class="drawer-backdrop"
             @click="emit('toggle')"
             >
-
+                <div>
+                    Teste
+                </div>
             </div>
         </div>
     </Transition>

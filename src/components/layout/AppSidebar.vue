@@ -1,13 +1,24 @@
 <template>
   <div>
     <div class="card flex justify-center">
-        <Drawer v-model:visible="visible" header="Drawer">
-            <div>
-              Icon
-            </div>
+        <Drawer class="p-6 bg-[#ede9fe]" v-model:visible="layout.sidebarOpen.value">
+          <template #header>
+              <SidebarHeader />
+          </template>
+          <div class="mt-7 flex flex-col">
+
+            <SidebarContent />
+
+          </div>
+          <template #footer>
+              <div class="flex items-center gap-2">
+                  <Button label="Account" icon="pi pi-user" class="flex-auto" variant="outlined"></Button>
+                  <Button label="Logout" icon="pi pi-sign-out" class="flex-auto" severity="danger" text></Button>
+              </div>
+          </template>
         </Drawer>
       </div>
-      <Button icon="pi pi-arrow-right" @click="visible = true" />
+      <!-- <Button icon="pi pi-arrow-right" @click="visible = true" /> -->
   </div>
 
 </template>
@@ -15,10 +26,11 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import Drawer from 'primevue/drawer';
+import { useLayout } from '@/composables/layout';
+import SidebarHeader from './components/SidebarHeader.vue';
+import SidebarContent from './components/SidebarContent.vue';
 
-import { ref } from "vue";
-
-const visible = ref(false);
+const layout = useLayout();
 
 interface NavItem {
   label: string
@@ -49,49 +61,10 @@ const emit = defineEmits<{
 
 const route = useRoute()
 
-const sections: NavSection[] = [
-  {
-    title: 'INÍCIO',
-    items: [{ label: 'Dashboard', icon: 'Whatsapp', routeName: 'Home' }],
-  },
-  {
-    title: 'ATENDIMENTO',
-    items: [
-      {
-        label: 'Agente IA',
-        icon: 'Whatsapp',
-        badge: 'Em breve',
-        disabled: true,
-      },
-    ],
-  },
-  {
-    title: 'GESTÃO',
-    items: [
-      { label: 'Pedidos', icon: 'Sync' },
-      { label: 'Vendas', icon: 'Wallet' },
-    ],
-  },
-  {
-    title: 'CATÁLOGO',
-    items: [
-      { label: 'Categorias', icon: 'ObjectsColumn' },
-      { label: 'Marcas', icon: 'Star' },
-      { label: 'Produtos', icon: 'List' },
-    ],
-  },
-]
+const sections = layout.sidebarSections.value
 
 function isActiveRoute(item: NavItem): boolean {
   return Boolean(item.routeName && route.name === item.routeName)
-}
-
-function closeAfterNavigate() {
-  emit('update:visible', false)
-}
-
-function handleBackdropClick() {
-  emit('update:visible', false)
 }
 </script>
 

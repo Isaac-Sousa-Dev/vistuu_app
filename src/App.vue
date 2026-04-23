@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import AppLayout from './components/layout/AppLayout.vue'
+
 </script>
 
 <template>
-  <RouterView />
+  <main class="w-full h-screen">
+    <AppLayout /> 
+  </main>
 </template>
 
 <style scoped></style>

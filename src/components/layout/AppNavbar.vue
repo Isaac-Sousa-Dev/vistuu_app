@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex h-14 items-center justify-between border-b border-gray-200 bg-white px-4 md:px-6"
+    class="flex h-14 items-center justify-between bg-[#ede9fe] px-4 md:px-6"
   >
     <template v-if="isAuthenticated">
       <div class="flex min-w-0 items-center gap-3">
@@ -75,6 +75,9 @@ import { storeToRefs } from 'pinia'
 import { RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { getInitialsFromDisplayName } from '@/utils/user-display'
+import { useLayout } from '@/composables/layout';
+
+const layout = useLayout();
 
 interface Props {
   pageTitle?: string
@@ -99,8 +102,9 @@ const userInitials = computed(() => {
 })
 
 function handleToggleSidebar() {
-  emit('toggleSidebar')
-}
+  console.log('toggle sidebar')
+  layout.toggleSidebar();
+} 
 
 function handleNotificationsClick() {
   // TODO: painel de notificações

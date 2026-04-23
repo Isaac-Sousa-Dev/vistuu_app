@@ -1,6 +1,6 @@
 <template>
     <component
-      :is="iconComponent"
+      :is="name"
       :size="size"
       :stroke-width="strokeWidth"
       :color="color"
