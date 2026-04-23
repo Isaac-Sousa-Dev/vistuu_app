@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-28 p-3 px-4 bg-white rounded-2xl shadow-md">
+    <div :class="bgCard" class="cursor-box w-full h-28 p-3 px-4 rounded-2xl shadow-sm">
         <div class="h-full flex flex-col justify-between">
             <div class="text-md text-gray-500 leading-tight">{{ title }}</div>
             <div class="flex items-end justify-between">
@@ -33,6 +33,43 @@ defineProps({
     },
     valueSize: {
         type: String
+    },
+    bgCard: {
+        type: String,
+        default: 'bg-white'
     }
 })
 </script>
+
+<style>
+.cursor-box {
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.cursor-box::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent, rgba(107, 136, 233, 0.158), transparent);
+    top: -100%;
+    left: -100%;
+    transition: all 0.5s ease;
+}
+
+.cursor-box:hover::before {
+    top: 100%;
+    left: 100%;
+}
+
+.cursor-box:hover {
+    transform: scale(1.05);
+    box-shadow: 2px 2px 0 #4E56C0;
+}
+</style>

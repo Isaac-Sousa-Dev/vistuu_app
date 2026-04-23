@@ -40,7 +40,7 @@
             </div>
 
             <div class="mt-5 flex flex-col gap-1">
-              <div class="bg-white p-3 rounded-lg">
+              <div class="bg-white shadow-sm cursor-pointer p-3 rounded-lg">
                 <div class="flex items-center justify-between">
                   <div class="text-sm text-gray-500">
                     Pedido #123456
@@ -124,4 +124,6 @@ function handleToggleSidebar() {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
