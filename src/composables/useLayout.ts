@@ -1,4 +1,3 @@
-// composables/useLayout.ts
 import { ref, computed } from 'vue'
 
 const sidebarOpen = ref(false)

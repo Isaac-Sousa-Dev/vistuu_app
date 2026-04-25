@@ -75,7 +75,7 @@ import { storeToRefs } from 'pinia'
 import { RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { getInitialsFromDisplayName } from '@/utils/user-display'
-import { useLayout } from '@/composables/layout';
+import { useLayout } from '@/composables/useLayout';
 
 const layout = useLayout();
 

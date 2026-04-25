@@ -1,8 +1,5 @@
 <template>
-  <div>  
-    <!-- <AppSidebar v-model:visible="sidebarVisible" /> -->
-    <div class="flex min-h-screen flex-col bg-gray-50" style="border-top-left-radius: 25px;">
-      <main class="flex-1 p-4 md:p-6">
+  <AppContent>
         <Breadcrumb class="mb-2 bg-transparent" :model="[{ label: 'Home', url: '/' }, { label: 'Dashboard', url: '/dashboard' }]">
             <template #item="{ item }">
                 <a class="cursor-pointer" :href="item.url">
@@ -22,8 +19,8 @@
           <CardDashboard title="Saldo do mês" value="R$ 2.000,00" icon="Wallet" iconColor="bg-[#fdf1f8]" valueSize="text-lg md:text-3xl" iconTextColor="text-[#9f1239]" />
         </div>
 
-        <div class="flex gap-10 mt-10 w-full">
-          <div class="w-1/2">
+        <div class="flex flex-col md:flex-row gap-10 mt-10 w-full">
+          <div class="w-full md:w-1/2">
             <div class="flex items-center justify-between">
               <div class="text-lg font-semibold flex items-center">
                 <List class="w-5 h-5 mr-2" />
@@ -31,7 +28,7 @@
               </div>
     
               <div class="text-md text-gray-500">
-                <div class="cursor-pointer font-semibold text-purple-700">Ver todos</div>
+                <div class="cursor-pointer font-semibold text-[#4E56C0]">Ver todos</div>
               </div>
             </div>
 
@@ -65,7 +62,7 @@
           </div>
 
 
-          <div class="w-1/2">
+          <div class="w-full md:w-1/2">
             <div class="flex items-center justify-between">
               <div class="text-lg font-semibold flex items-center">
                 <List class="w-5 h-5 mr-2" />
@@ -73,7 +70,7 @@
               </div>
     
               <div class="text-md text-gray-500">
-                <div class="cursor-pointer font-semibold text-purple-700">Ver todos</div>
+                <div class="cursor-pointer font-semibold text-[#4E56C0]">Ver todos</div>
               </div>
             </div>
 
@@ -100,16 +97,12 @@
             </div>
           </div>
         </div>
-
-        
-
-      </main>
-    </div>
-  </div>
+  </AppContent>
 </template>
 
 <script setup lang="ts">
 import Breadcrumb from 'primevue/breadcrumb';
+import AppContent from '@/components/layout/AppContent.vue';
 
 import CardDashboard from '@/components/ui/CardDashboard.vue';
 import { List } from '@lucide/vue';

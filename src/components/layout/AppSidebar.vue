@@ -26,7 +26,7 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import Drawer from 'primevue/drawer';
-import { useLayout } from '@/composables/layout';
+import { useLayout } from '@/composables/useLayout';
 import SidebarHeader from './components/SidebarHeader.vue';
 import SidebarContent from './components/SidebarContent.vue';
 
