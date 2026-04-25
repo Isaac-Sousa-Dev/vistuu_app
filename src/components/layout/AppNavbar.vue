@@ -36,7 +36,7 @@
 
         <button
           type="button"
-          class="flex cursor-pointer items-center gap-3 rounded-lg py-1 pl-1 pr-0 transition hover:bg-gray-50"
+          class="flex cursor-pointer items-center gap-3 rounded-lg py-1 pl-1 pr-0 transition"
           @click="handleProfileClick"
         >
           <div class="hidden min-w-0 text-right sm:block">

@@ -2,7 +2,7 @@
 
     <div class="p-6">
         <SidebarHeader />
-        <SidebarContent />
+        <SidebarContent class="mt-14" />
     </div>
 
 </template>

@@ -6,32 +6,34 @@ const sidebarOpen = ref(false)
 const sidebarSections = ref([
     {
         title: 'INÍCIO',
-        items: [{ label: 'Dashboard', icon: 'fa-solid fa-gauge-simple-high', routeName: 'Home' }],
+        items: [{ label: 'Dashboard', icon: 'fa-solid fa-gauge-simple-high', routeName: 'Home', active: true }],
     },
     {
         title: 'ATENDIMENTO',
         items: [
             {
-            label: 'Agente IA',
-            icon: 'fa-solid fa-robot',
-            badge: 'Em breve',
-            disabled: true,
+                label: 'Agente IA',
+                icon: 'fa-solid fa-robot',
+                badge: 'Em breve',
+                disabled: true,
+                active: false,
+                routeName: null,
             },
         ],
     },
     {
         title: 'GESTÃO',
         items: [
-            { label: 'Pedidos', icon: 'fa-solid fa-list-ul' },
-            { label: 'Vendas', icon: 'fa-solid fa-wallet' },
+            { label: 'Pedidos', icon: 'fa-solid fa-list-ul', routeName: 'Pedidos', active: false },
+            { label: 'Vendas', icon: 'fa-solid fa-wallet', routeName: 'Vendas', active: false },
         ],
     },
     {
         title: 'CATÁLOGO',
         items: [
-            { label: 'Categorias', icon: 'fa-solid fa-layer-group' },
-            { label: 'Marcas', icon: 'fa-solid fa-star' },
-            { label: 'Produtos', icon: 'fa-solid fa-list' },
+            { label: 'Categorias', icon: 'fa-solid fa-layer-group', active: false, routeName: null },
+            { label: 'Marcas', icon: 'fa-solid fa-star', active: false, routeName: null },
+            { label: 'Produtos', icon: 'fa-solid fa-list', active: false, routeName: null },
         ],
     },
 ])

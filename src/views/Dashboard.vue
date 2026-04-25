@@ -109,19 +109,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import AppNavbar from '@/components/layout/AppNavbar.vue'
-import AppSidebar from '@/components/layout/AppSidebar.vue'
 import Breadcrumb from 'primevue/breadcrumb';
 
-import CardDashboard from '@/components/CardDashboard.vue';
+import CardDashboard from '@/components/ui/CardDashboard.vue';
 import { List } from '@lucide/vue';
 
-const sidebarVisible = ref(false)
-
-function handleToggleSidebar() {
-  sidebarVisible.value = !sidebarVisible.value
-}
 </script>
 
 <style scoped>
